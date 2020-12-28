@@ -6,3 +6,5 @@ Solution for the classic puzzle, where a person has a task to bring 3 of his bel
 
 ## Palingrams
 Codes that search a dictionary and find palindromes, palingrams, make sentences with palingrams etc.
+
+## Cryptopgraphy

@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/rev_trianlge.dir/main.cpp.o  -o rev_trianlge 

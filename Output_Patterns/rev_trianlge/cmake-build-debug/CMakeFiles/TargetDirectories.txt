@@ -1,3 +1,0 @@
-/home/oxxo/Documents/Github/Projects/Output_Patterns/rev_trianlge/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/oxxo/Documents/Github/Projects/Output_Patterns/rev_trianlge/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/oxxo/Documents/Github/Projects/Output_Patterns/rev_trianlge/cmake-build-debug/CMakeFiles/rev_trianlge.dir

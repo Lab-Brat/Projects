@@ -9,3 +9,6 @@ Codes that search a dictionary and find palindromes, palingrams, make sentences 
 
 ## Cryptopgraphy
 Different ciphers and programs that can break them. So far, it is planned to explore union route cipher, rail fence cipher and Ceasers cipher. Programs that will crack these ciphers will come shortly after ciphers are done. 
+
+## Output_Patterns
+Testing the limitations and possibilities of output patterns that can be done using only for loops, new lines and spaces. Everything here will be done in C++. Furthermore, run-length encoding of the image will also be explored, to output the image in ASCII symbols.

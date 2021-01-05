@@ -8,3 +8,4 @@ Solution for the classic puzzle, where a person has a task to bring 3 of his bel
 Codes that search a dictionary and find palindromes, palingrams, make sentences with palingrams etc.
 
 ## Cryptopgraphy
+Different ciphers and programs that can break them. So far, it is planned to explore union route cipher, rail fence cipher and Ceasers cipher. Programs that will crack these ciphers will come shortly after ciphers are done. 

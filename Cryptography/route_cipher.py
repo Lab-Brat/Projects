@@ -23,11 +23,6 @@ def build_matrix(key_int, cipherlist):
 
     return translation_matrix
 
-
-# print("\nciphertext = {}".format(ciphertext))
-# print("\ntranslation matrix =", *translation_matrix, sep="\n")
-# print("\nkey length= {}".format(len(key_int)))
-
 def decrypt(translation_matrix):
     plaintext = ''
     # Extracting plain text
@@ -38,13 +33,6 @@ def decrypt(translation_matrix):
     # print("\nplaintext = {}".format(plaintext))
     return plaintext
 
-
-# print(main())
-# cipherlist = list(ciphertext.split())
-# key_int = [int(i) for i in key.split()]
-# mm = build_matrix(key_int, cipherlist)
-
-# print(*mm, sep="\n")
 
 def main():
     # add every number separately into a list

@@ -14,4 +14,4 @@ Testing the limitations and possibilities of output patterns that can be done us
 Codes that search a dictionary and find palindromes, palingrams, make sentences with palingrams etc.
 
 ## TSP
-Solution to Traveling Salesman Problem (TSP) with two algorithms, namely Genetic Algorithm (GA) and Simulated Annealing (SA).
+Solution to Traveling Salesman Problem (TSP) with two algorithms, namely Genetic Algorithm (GA) and Simulated Annealing (SA). Later will be incorporated into my project of making a traveling map of Russia. 

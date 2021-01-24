@@ -6,8 +6,7 @@ int main()
 	
 	// E(69)-64=5, str is a string of
 	// consecutive 5 ' 's and 5 '!'s
-	const char *str="@EEEEEEEEEEEEEEEEEEEE\
-			 EEEEEEEEEEEEEEEEEEEE";
+	const char *str="@EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
 
 	do{
 		a=str[b];

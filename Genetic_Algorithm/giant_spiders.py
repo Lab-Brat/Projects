@@ -20,11 +20,14 @@ LIMIT = 2000
 def populate(num_spi, min_w, max_w, mode_w):
     return [int(random.triangular(min_w, max_w, mode_w)) for i in range(num_spi)]
 
+
 def mean(lis):
     return sum(lis)/len(lis)
 
+
 def fitness(population, goal):
     return mean(population)/goal
+
 
 def select(population, to_retain):
     pop_s = sorted(population)
@@ -38,8 +41,27 @@ def select(population, to_retain):
     selected_females = females[-retain_by_sex:] # select from end
 
     # print(retain_by_sex, members_per_sex)
-
     return selected_males, selected_females
+
+
+def breed(males, females, litter_size):
+    random.shuffle(males)
+    random.shuffle(females)
+    children = []
+
+    for male, female in zip(males, females): # group by two (crossover)
+        for child in range(litter_size):
+            child = random.randint(male, female)
+            children.append(child)
+        
+    return children
+
+
+def mutate(children, mutate_odds, mutate_min, mutate_max):
+    for index, rat in enumerate(children):
+        if mutate_odds >= random.random():
+            children[index] = round(rat*random.uniform(mutate_min, mutate_max))
+    return children
 
 
 pop = populate(NUM_SPI, INIT_MIN_W, INIT_MAX_W, INIT_MOD_W)

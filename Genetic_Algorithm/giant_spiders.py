@@ -20,5 +20,14 @@ LIMIT = 2000
 def populate(num_spi, min_w, max_w, mode_w):
     return [int(random.triangular(min_w, max_w, mode_w)) for i in range(num_spi)]
 
+def mean(lis):
+    return sum(lis)/len(lis)
+
+def fitness(population, goal):
+    return mean(population)/goal
+
 pop = populate(NUM_SPI, INIT_MIN_W, INIT_MAX_W, INIT_MOD_W)
-print(len(pop))
+M = mean(pop)
+FIT = fitness(pop, GOAL)
+
+print(M)

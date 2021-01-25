@@ -1,15 +1,17 @@
 # Using Genetic Algorithm (GA) to simulate the 
 # breeding process of Giant Spiders
 
+import time
 import random
 
+
 # Constants
-GOAL = 6000
+GOAL = 10000
 NUM_SPI = 50
 INIT_MIN_W = 80
 INIT_MAX_W = 200
 INIT_MOD_W = 100
-MUTATE = 0.1
+MUTATE_ODDS = 0.1
 MUTATE_MIN = 0.8
 MUTATE_MAX = 1.5
 HATCH_NUM = 100
@@ -44,13 +46,13 @@ def select(population, to_retain):
     return selected_males, selected_females
 
 
-def breed(males, females, litter_size):
+def breed(males, females, hatch_num):
     random.shuffle(males)
     random.shuffle(females)
     children = []
 
     for male, female in zip(males, females): # group by two (crossover)
-        for child in range(litter_size):
+        for child in range(hatch_num):
             child = random.randint(male, female)
             children.append(child)
         
@@ -63,10 +65,44 @@ def mutate(children, mutate_odds, mutate_min, mutate_max):
             children[index] = round(rat*random.uniform(mutate_min, mutate_max))
     return children
 
+# Genetic Algorithm
+def main():
+    generations = 0
 
-pop = populate(NUM_SPI, INIT_MIN_W, INIT_MAX_W, INIT_MOD_W)
-pop_fit = fitness(pop, GOAL)
+    # initialize population
+    parents = populate(NUM_SPI, INIT_MIN_W, INIT_MAX_W,INIT_MOD_W)
+    print("initial population weights = {}".format(parents))
 
-sm, sf = select(pop, NUM_SPI)
+    # calculate population fitness
+    pop_fit = fitness(parents, GOAL)
+    print("initial population fitness = {}".format(pop_fit))
+    print("number to retain = {}".format(NUM_SPI))
 
-print(sm, sf)
+    ave_wt = []
+
+    while pop_fit < 1 and generations < LIMIT:
+        # split by sex
+        selected_males, selected_females = select(parents, NUM_SPI)
+
+        # crossover and mutation
+        children = breed(selected_males, selected_females, HATCH_NUM)
+        children = mutate(children, MUTATE_ODDS, MUTATE_MIN, MUTATE_MAX)
+
+        # add everything together, recalculate fitness
+        parents = selected_males + selected_females + children
+        pop_fit = fitness(parents, GOAL)
+        print("Generation {} fitness = {:.4f}".format(generations, pop_fit))
+        ave_wt.append(int(mean(parents)))
+        generations += 1
+
+    # output information
+    print("average weight per generation = {}".format(ave_wt))
+    print("\nnumber of generations = {}".format(generations))
+    print("number of years = {}".format(int(generations / PER_YEAR)))
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main()
+    end_time = time.time()
+    duration = end_time - start_time
+    print("\nRuntime for this program was {} seconds.".format(duration))    

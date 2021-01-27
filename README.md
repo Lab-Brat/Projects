@@ -7,6 +7,9 @@ Different ciphers and programs that can break them. So far, it is planned to exp
 ## Fox_Chicken_Corn
 Solution for the classic puzzle, where a person has a task to bring 3 of his belongings, namely a fox, chicken and a bag of corn, across the river using a small boat that can only carry 1 belonging. The person can not leave fox and chicken alone on a shore, and also chicken and corn can not be left alone. The solution is all the actions the person takes to move all 3 belongings, provided by Depth First Search algorithm.
 
+## Genetic_Algorithm
+Some easy applications of genetic algorithm to simple real life problems, contains two files. One is a genetics experiment, which purpose is to calculate how many years will take to breed normal spiders into giant size spiders. The other one is using GA to hack a 10 digit password, and a comparison with a brute force algorithm.
+
 ## Output_Patterns
 Testing the limitations and possibilities of output patterns that can be done using only for loops, new lines and spaces. Everything here will be done in C++. Furthermore, run-length encoding of the image will also be explored, to output the image in ASCII symbols.
 

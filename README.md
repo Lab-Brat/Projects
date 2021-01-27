@@ -16,5 +16,8 @@ Testing the limitations and possibilities of output patterns that can be done us
 ## Palingrams
 Codes that search a dictionary and find palindromes, palingrams, make sentences with palingrams etc.
 
+## Pixelator
+A part of a future bigger project. What pixelator does, is it takes an image as input, the with the use of PIL library transorms the picture into it's pixelated version, namely each pixel and it's neighbors are summer together to produce an average pixel color value, then one pixel is substituted by this value. You can choose the level of pixelation too. 
+
 ## TSP
 Solution to Traveling Salesman Problem (TSP) with two algorithms, namely Genetic Algorithm (GA) and Simulated Annealing (SA). Later will be incorporated into my project of making a traveling map of Russia. 

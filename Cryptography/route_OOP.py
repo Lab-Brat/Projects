@@ -34,14 +34,21 @@ class RouteCipher:
     def encrypt(self):
         translation_matrix = [None] * self.cols
 
+        # create translation matrix
         for i in range(4):
             if self.key_int[i] < 0:
-                col_items = self.cipherlist[i::4]
-            elif self.key_int[i] > 0:
                 col_items = list(reversed(self.cipherlist[i::4]))
+            elif self.key_int[i] > 0:
+                col_items = self.cipherlist[i::4]
             translation_matrix[i] = col_items
 
-        return translation_matrix
+        plaintext = ''
+        # read translation matrix as string
+        for j in translation_matrix:
+            for el in j:
+                plaintext += el + ' '
+
+        return plaintext
 
 
     def __repr__(self):

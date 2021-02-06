@@ -12,7 +12,7 @@ class RouteCipher:
         stop = self.rows
         translation_matrix = [None] * self.cols
 
-        # fill translation matrix
+        # create translation matrix
         for k in self.key_int:
             if k < 0:
                 col_items = self.cipherlist[start:stop]
@@ -23,12 +23,18 @@ class RouteCipher:
             stop += self.rows
 
         plaintext = ''
-        # Extracting plain text
+        # read translation matrix as string
         for i in range(self.rows):
             for j in translation_matrix:
                 word = str(j.pop())
                 plaintext += word + ' '
         return plaintext
+
+
+    def encrypt(self):
+
+
+
 
 
     def __repr__(self):

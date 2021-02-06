@@ -32,9 +32,16 @@ class RouteCipher:
 
 
     def encrypt(self):
+        translation_matrix = [None] * self.cols
 
+        for i in range(4):
+            if self.key_int[i] < 0:
+                col_items = self.cipherlist[i::4]
+            elif self.key_int[i] > 0:
+                col_items = list(reversed(self.cipherlist[i::4]))
+            translation_matrix[i] = col_items
 
-
+        return translation_matrix
 
 
     def __repr__(self):
@@ -43,9 +50,13 @@ class RouteCipher:
 
 
 ciphertext = "16 12 8 4 0 1 5 9 13 17 18 14 10 6 2 3 7 11 15 19"
+to_ciph = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19"
 COLS = 4
 ROWS = 5
 KEY = "-1 2 -3 4"
 
-dec1 = RouteCipher(ciphertext, COLS, ROWS, KEY)
-print(dec1.decrypt())
+# dec1 = RouteCipher(ciphertext, COLS, ROWS, KEY)
+# print(dec1.decrypt())
+
+dec2 = RouteCipher(to_ciph, COLS, ROWS, KEY)
+print(dec2.encrypt())

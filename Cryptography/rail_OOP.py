@@ -10,13 +10,10 @@ class RailFenceCipher:
     def encrypt(self):
         upper_part = self.text_up[0::2]
         lower_part = self.text_up[1::2]
-
-        self.split_text[0] = upper_part
-        self.split_text[1] = lower_part
-
         result = upper_part + lower_part
 
-        return result
+        return ' '.join([result[i:i+5] for i in range(0, len(result), 5)])
+
 
 if __name__ == "__main__":
 

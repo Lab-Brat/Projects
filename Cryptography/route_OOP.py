@@ -1,4 +1,10 @@
 class RouteCipher:
+    """
+    Input: cipher: Either an encrypted or decrypted string
+           cols, rows: Dimentions of the encryption table
+           key: A key that specifies how to read data from the matrix
+    Output: Either an encrypted or decrypted string
+    """
     def __init__(self, cipher, cols, rows, key):
         self.cipher = cipher
         self.cols = cols
@@ -9,6 +15,7 @@ class RouteCipher:
         self.translation_matrix = [None] * self.cols
 
     def decrypt(self):
+        """ Decrypts the message when called, and outputs a string"""
         start = 0
         stop = self.rows
 
@@ -32,6 +39,7 @@ class RouteCipher:
 
 
     def encrypt(self):
+        """ Ecrypts the message when called, and outputs a string"""
         # create translation matrix
         for i in range(self.cols):
             if self.key_int[i] < 0:

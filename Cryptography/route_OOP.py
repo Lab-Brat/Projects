@@ -1,3 +1,6 @@
+from itertools import permutations
+from itertools import product
+
 class RouteCipher:
     """
     Input: cipher: Either an encrypted or decrypted string
@@ -57,6 +60,16 @@ class RouteCipher:
 
         return plaintext
 
+    def gen_all(self):
+        result = []
+        columns = [x for x in range(1, self.cols+1)]
+
+        for perm in permutations(columns):
+            for signs in product([1, -1], repeat=len(columns)):
+                # multiply the signes to the permutations
+                result.append([i*sign for i, sign in zip(perm, signs)])
+
+        return len(result)
 
     def __repr__(self):
         return "[INFO]\ncipher: {}\nkey: {}".format(\
@@ -66,16 +79,16 @@ class RouteCipher:
 if __name__ == "__main__":
     ciphertext = "16 12 8 4 0 1 5 9 13 17 18 14 10 6 2 3 7 11 15 19"
     to_ciph = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19"
-    # COLS = 4
-    # ROWS = 5
     KEY = {'45': "-1 2 -3 4"}
 
     dec1 = RouteCipher(ciphertext, KEY)
-    print("After decryption: {}".format(dec1.decrypt()))
-    print('\n')
+    # print("After decryption: {}".format(dec1.decrypt()))
+    # print('\n')
+    #
+    # dec2 = RouteCipher(to_ciph, KEY)
+    # print("After ecryption:  {}".format(dec2.encrypt()))
+    # print('\n')
+    #
+    # print(dec1)
 
-    dec2 = RouteCipher(to_ciph, KEY)
-    print("After ecryption:  {}".format(dec2.encrypt()))
-    print('\n')
-
-    print(dec1)
+    print(dec1.gen_all())

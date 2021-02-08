@@ -12,7 +12,16 @@ class RailFenceCipher:
 
         return ' '.join([result[i:i+5] for i in range(0, len(result), 5)])
 
-    # def decrypt(self):
+    def decrypt(self):
+        left_part = self.text_low[0:len(self.text_low)//2]
+        right_part = self.text_low[len(self.text_low)//2:len(self.text_low)]
+
+        result = ''
+        for i in range(len(self.text_low)//2):
+            result += left_part[i]
+            result += right_part[i]
+
+        return result
 
     def __repr__(self):
         return "[Result: {}]".format(self.text_low)
@@ -27,4 +36,4 @@ if __name__ == "__main__":
     case2 = RailFenceCipher(plaintxt2)
 
     # print(case1.encrypt())
-    print(case2)
+    print(case2.decrypt())

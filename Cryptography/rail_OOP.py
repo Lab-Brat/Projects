@@ -38,11 +38,15 @@ class RailFenceCipher:
 
 if __name__ == "__main__":
 
-    plaintxt = 'Buy more Maine potatoes'
-    plaintxt2 = "BYOEA NPTTE UMRMI EOAOS"
+    # plaintxt = 'Buy more Maine potatoes'
+    # plaintxt2 = "BYOEA NPTTE UMRMI EOAOS"
+    ciphertext = "LTSRS OETEI EADET NETEH DOTER EEUCO \
+                           SVRHR VRNRS UDRHS AEFHT ES"
 
-    case1 = RailFenceCipher(plaintxt)
-    case2 = RailFenceCipher(plaintxt2)
-
-    print("After encryption:  {}".format(case1.encrypt()))
-    print("After dencryption: {}".format(case2.decrypt()))
+    # case1 = RailFenceCipher(plaintxt)
+    # case2 = RailFenceCipher(plaintxt2)
+    case3 = RailFenceCipher(ciphertext)
+    
+    # print("After encryption:  {}".format(case1.encrypt()))
+    # print("After dencryption: {}".format(case2.decrypt()))
+    print("After dencryption: {}".format(case3.decrypt()))

@@ -19,7 +19,7 @@ class RailFenceCipher:
         return ' '.join([result[i:i+5] for i in range(0, len(result), 5)])
 
     def decrypt(self):
-        """Split the string into two halves, then add a character 
+        """Split the string into two halves, then add a character
            from each string on every iterationv (reverse of zig-zag)"""
         half = len(self.text_low)//2
         left_part = self.text_low[0:half]

@@ -5,11 +5,12 @@ class RouteCipher:
            key: A key that specifies how to read data from the matrix
     Output: Either an encrypted or decrypted string
     """
-    def __init__(self, cipher, cols, rows, key):
+
+    def __init__(self, cipher, key):
         self.cipher = cipher
-        self.cols = cols
-        self.rows = rows
-        self.key = key
+        self.cols = int(list(key.keys())[0][0])
+        self.rows = int(list(key.keys())[0][1])
+        self.key = key[list(key.keys())[0]]
         self.cipherlist = list(self.cipher.split())
         self.key_int = [int(i) for i in self.key.split()]
         self.translation_matrix = [None] * self.cols
@@ -65,15 +66,15 @@ class RouteCipher:
 if __name__ == "__main__":
     ciphertext = "16 12 8 4 0 1 5 9 13 17 18 14 10 6 2 3 7 11 15 19"
     to_ciph = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19"
-    COLS = 4
-    ROWS = 5
-    KEY = "-1 2 -3 4"
+    # COLS = 4
+    # ROWS = 5
+    KEY = {'45': "-1 2 -3 4"}
 
-    dec1 = RouteCipher(ciphertext, COLS, ROWS, KEY)
+    dec1 = RouteCipher(ciphertext, KEY)
     print("After decryption: {}".format(dec1.decrypt()))
     print('\n')
 
-    dec2 = RouteCipher(to_ciph, COLS, ROWS, KEY)
+    dec2 = RouteCipher(to_ciph, KEY)
     print("After ecryption:  {}".format(dec2.encrypt()))
     print('\n')
 

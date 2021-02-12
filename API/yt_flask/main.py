@@ -23,21 +23,33 @@ video_args.add_argument("likes", type=int, help="Likes of the video")
 
 videos = {2: {"name": "Vasya", "views": 3333333, "likes": 300}}
 
-def no_id_abort(video_id):
-    if video_id not in videos:
-        abort(404, message="video_id not found")
-    else:
-        print('video_id found! Sending requested data...')
+class ID_Status():
+    def no_id(self, vid_id):
+        if vid_id not in videos:
+            abort(404, message="video_id not found")
+        else:
+            print('video_if found! Sending requested data...')
+
+    def exist_id(self, vid_id):
+        if vid_id in videos:
+            abort(409, message="video_id already exists")
 
 class Video(Resource):
     def get(self, video_id):
-        no_id_abort(video_id)
+        get_status = ID_Status()
+        get_status.no_id(video_id)
         return videos[video_id]
 
     def put(self, video_id):
         args = video_args.parse_args()
         videos[video_id] = args
         return videos[video_id], 201
+
+    def delete(self, video_id):
+        get_status = ID_Status()
+        get_status.exist_id(video_id)
+        del videos[video_id]
+        return 'deletion successful', 204
 
 api.add_resource(Video, "/video/<int:video_id>")
 

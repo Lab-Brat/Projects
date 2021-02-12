@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_restful import Api, Resource, reqparse
+from flask_restful import Api, Resource, reqparse, abort
 
 # initialize Flask application and an API
 app = Flask(__name__)
@@ -23,8 +23,15 @@ video_args.add_argument("likes", type=int, help="Likes of the video")
 
 videos = {2: {"name": "Vasya", "views": 3333333, "likes": 300}}
 
+def no_id_abort(video_id):
+    if video_id not in videos:
+        abort(404, message="video_id not found")
+    else:
+        print('video_id found! Sending requested data...')
+
 class Video(Resource):
     def get(self, video_id):
+        no_id_abort(video_id)
         return videos[video_id]
 
     def put(self, video_id):

@@ -15,11 +15,20 @@ def out_stuff(path):
 
 start = time.time()
 
-recoms = []
-for i in out_stuff(path):
-    if i[1] == 'Ss01C6ny1O':
-        recoms.append(i)
+def get_recoms(sku, threshold=0):
+    recoms = []
+    for i in out_stuff(path):
+        if i[1]==sku and threshold==0:
+            recoms.append(i)
+        elif i[1]==sku and threshold>0:
+            if float(i[2]) > threshold:
+                recoms.append(i)
+    return recoms
+
+sku = 'Ss01C6ny1O'
+# sku = 'WOaFaund0j'
+recoms = get_recoms(sku, threshold=0.7)
 
 end = time.time()
-print("quantity of recommendaitons: ", len(recoms))
+print("there are {} recommendaitons for {}: ".format(sku,len(recoms)))
 print('it took {0: .2f} seconds'.format(end-start))

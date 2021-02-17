@@ -11,5 +11,5 @@ has a recommendation, and the last column is a value representing similarity of 
 * socket_client.py: A client, sends requests containing two parameters - a string to be found in the CSV file, and the similarity threshold.
 
 ## Running the API
-To run the program, first run socket_server.py in a terminal, then in another terminal window launch socket_client.py. To search for the required key, in socket_client.py 
+To run the program, first run socket_server.py in a terminal, then in another terminal window launch socket_client.py. To search for a specific key, in socket_client.py 
 change INPUT variable to the desired product and similarity value. 

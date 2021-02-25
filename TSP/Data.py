@@ -4,6 +4,7 @@ import random
 #     data = [loc for loc in txt]
 #     txt.close()
 
+# custromers locations
 data = [        [10,10], [15,30], [45,77],  [20,50],  [60,50],
                 [60,15], [90,25], [90,79],  [54,18],  [21,10],
                 [63,91], [16,71], [26,29],  [58,39],  [33,15],
@@ -14,28 +15,36 @@ data = [        [10,10], [15,30], [45,77],  [20,50],  [60,50],
                 [76,67], [57,50], [99,21],  [99,88],  [5,31]
         ]
 
+# visiting restrictions
 res1 = [5,10,15,20,25,30,35,40]     # only visit 3 of these
 res2 = [2,4,6,8,10,20,22,32,33,35]  # only visit 5 of these
 
+
 class dataPreProcess():
-    def __init__(self, data, res1, res2):
+    def __init__(self):
         self.data = data
         self.ran_seq = random.sample(range(1,len(data)+1), len(data))
         self.res1 = res1
         self.res2 = res2
 
     def getInds(self):
+        '''Select locations to visit and output their indices'''
+        # visit at least 3 locations from res1, and 5 from res2
         res1_sel = random.sample(self.res1, 3)
         res2_sel = random.sample(self.res2, 5)
 
+        # select unique locations
         res_set = set(res1).union(set(res2))
         res_sel_set = set(res1_sel).union(set(res2_sel))
 
+        # remove all restricted locations, then add the selected ones
         fin_seq = [i for i in self.ran_seq if i not in res_set]
         fin_seq.extend(res_sel_set)
         return fin_seq
 
     def getLocs(self):
+        ''' Output actual locations from data using selected locations '''
+        # sort indices, then use them to find locations in data
         coords_indx_sort = sorted(self.getInds())
         coords_list = [self.data[i-1] for i in coords_indx_sort]
 
@@ -47,5 +56,5 @@ class dataPreProcess():
         return coords_list
 
 if __name__ == '__main__':
-    LOC = dataPreProcess(data, res1, res2).getLocs()
+    LOC = dataPreProcess().getLocs()
     print(LOC)

@@ -24,7 +24,7 @@ class dataPreProcess():
         self.res1 = res1
         self.res2 = res2
 
-    def getLocs(self):
+    def getInds(self):
         res1_sel = random.sample(self.res1, 3)
         res2_sel = random.sample(self.res2, 5)
 
@@ -33,12 +33,19 @@ class dataPreProcess():
 
         fin_seq = [i for i in self.ran_seq if i not in res_set]
         fin_seq.extend(res_sel_set)
-
         return fin_seq
 
+    def getLocs(self):
+        coords_indx_sort = sorted(self.getInds())
+        coords_list = [self.data[i-1] for i in coords_indx_sort]
 
-DPP = dataPreProcess(data, res1, res2)
-FS = DPP.getLocs()
+        # start and finish at the depot coordinate
+        depot = [0,0]
+        coords_list.insert(0, depot)
+        coords_list.append(depot)
 
-print(FS, len(FS))
-print(len(data))
+        return coords_list
+
+if __name__ == '__main__':
+    LOC = dataPreProcess(data, res1, res2).getLocs()
+    print(LOC)

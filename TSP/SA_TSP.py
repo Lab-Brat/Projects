@@ -1,4 +1,4 @@
-import random
+import random, math
 from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
 
@@ -8,6 +8,14 @@ class SA():
         self.L = len(self.coords)
         self.all_locs = [i for i in range(self.L)]
 
+        self.T = math.sqrt(self.L)
+        self.alpha = 0.995
+        self.stopping_temperature = 1e-8
+
+        self.best_path = None
+        self.best_fit = float("Inf")
+
+
     def dist(self, loc1, loc2):
         """ Euclidean distance between two locations. """
         return eu(self.coords[loc1], self.coords[loc2])
@@ -16,7 +24,7 @@ class SA():
         """ Fitness value (total distance) of the path. """
         fit = 0
         for i in range(self.L):
-            fit += self.dist(path[i], path[(i+1)%self.L])
+            fit += self.dist(path[i % self.L], path[(i + 1) % self.L])
         return fit
 
     def greedy(self):
@@ -35,6 +43,40 @@ class SA():
 
         return path, self.fitness(path)
 
+
+    def accept(self, candidate):
+        """ Accept if candidate is better than current, else leave it to chance. """
+        candidate_fitness = self.fitness(candidate)
+        if candidate_fitness < self.fit:
+            self.fit, self.path = candidate_fitness, candidate
+            if candidate_fitness < self.best_fit:
+                self.best_fit, self.best_path = candidate_fitness, candidate
+        else:
+            if random.random() < math.exp(-abs(candidate_fitness - self.fit) / self.T):
+                self.fit, self.path = candidate_fitness, candidate
+
+    def sim_anneal(self):
+        """ Execute simulated annealing algorithm. """
+        # Initialize with the greedy solution.
+        self.path, self.fit = self.greedy()
+
+        # Start annealing
+        while self.T >= self.stopping_temperature:
+            candidate = list(self.path)
+            l = random.randint(2, self.L - 1)
+            i = random.randint(0, self.L - l)
+            candidate[i:(i+l)] = reversed(candidate[i:(i+l)])
+            self.accept(candidate)
+            self.T *= self.alpha
+
+        return (self.best_path, self.best_fit)
+
+
 if __name__ == "__main__":
-    fin_path, fit = SA().greedy()
-    print("Path:\n{0}\nTotal distance: {1:.2f}".format(fin_path, fit))
+    gr_path, gr_fit = SA().greedy()
+    sa_path, sa_fit = SA().sim_anneal()
+    print("Results of the greedy algorithm:")
+    print("Path:\n{0}\nTotal distance: {1:.2f}".format(gr_path, gr_fit))
+    print("\n")
+    print("Results of the simulated annealing:")
+    print("Path:\n{0}\nTotal distance: {1:.2f}".format(sa_path, sa_fit))

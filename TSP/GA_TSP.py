@@ -54,7 +54,7 @@ class GA():
         r = random.random()
         for i in range(self.factor):
             sel_chrom = [x for x in self.pop_sum if x[1] >= (r+i/self.factor)%1][0]
-            self.new_pop.append(sel_chrom)
+            self.new_pop.append(sel_chrom[0])
 
         return self.new_pop
 
@@ -83,27 +83,27 @@ class GA():
         mutated[gene2] = chromosome[gene1]
         return mutated
 
-    def createOffspring(self, parents, p=0.1):
-        ''' Applying crossover and mutation on parents. '''
-        self.offspring = []
-
-        for i in range(self.L):
-            p1, p2 = random.sample(parents, 2)
-            c1, c2 = self.crossover(p1, p2)
-            self.offspring.append(c1)
-            self.offspring.append(c2)
-
-        for x in parents[0]:
-            if random.random() <= p:
-                c = self.mutation(x)
-                self.offspring.append(c)
-
-        return self.offspring
+    # def createOffspring(self, parents, p=0.1):
+    #     ''' Applying crossover and mutation on parents. '''
+    #     self.offspring = []
+    #
+    #     for i in range(self.L):
+    #         p1, p2 = random.sample(parents, 2)
+    #         c1, c2 = self.crossover(p1, p2)
+    #         self.offspring.append(c1)
+    #         self.offspring.append(c2)
+    #
+    #     for x in parents:
+    #         if random.random() <= p:
+    #             c = self.mutation(x)
+    #             self.offspring.append(c)
+    #
+    #     return self.offspring
 
     def check(self):
         parents = self.selection()
-        offspring = self.createOffspring(parents)
-        return offspring
+        # offspring = self.createOffspring(parents)
+        return parents
 
 if __name__ == "__main__":
     off = GA(300, 150).check()

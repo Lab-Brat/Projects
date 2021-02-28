@@ -1,55 +1,53 @@
 import math, random, random, copy
-from sklearn.metrics.pairwise import pairwise_distances
 from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
 
 class GA():
-    def __init__(self, population_size, selection_factor, runs):
+    def __init__(self, coords, runs):
         self.runs = runs
-        self.coords = dataPreProcess().getLocs()
-        self.L = len(self.coords)
-        self.genes = [i for i in range(self.L)]
-        self.chrom = population_size
-        self.factor = selection_factor
-        self.pop = [random.sample(self.genes, self.L) for i in range(self.chrom)]
+        self.coords = coords
 
-    def dist(self, loc1, loc2):
-        """ Euclidean distance between two locations. """
-        return eu(self.coords[loc1], self.coords[loc2])
+        self.N = len(self.coords)
+        self.genes = [i for i in range(self.N)]
+        self.chrom = 300
+        self.pop = [random.sample(self.genes, self.N) for i in range(self.chrom)]
 
-    def fitness(self, path):
-        """ Fitness value (total distance) of the path. """
-        fit = 0
-        for i in range(self.L):
-            fit += self.dist(path[i%self.L], path[(i+1)%self.L])
-        return fit
+    def fitness(self, chromosome):
+        fitness = 0
 
-    def selection(self, p=[1,0]):
+        xs = [self.coords[chromosome[i%self.N]][0] for i in range(self.N+1)]
+        ys = [self.coords[chromosome[i%self.N]][1] for i in range(self.N+1)]
+
+        for k in range(self.N-1):
+            fitness += math.sqrt((xs[k]-xs[k+1])**2 + (ys[k]-ys[k+1])**2)
+        return fitness
+
+    def selection(self, factor, p=[1,0]):
         """ Selection: stohastic universal sampling. """
-        self.pop_sum = []
-        self.new_pop = []
+        pop_sum = []
+        new_pop = []
         total_fitness = sum([self.fitness(x) for x in self.pop])
 
         for x in self.pop:
             prob1 = (p[0]*(total_fitness - self.fitness(x))+p[1])
             prob2 = (p[0]*(total_fitness*(len(self.pop)-1))+p[1])
             prob = prob1/prob2
-            self.pop_sum.append([x, prob])
+            pop_sum.append([x, prob])
 
-        self.pop_sum.sort(key=lambda x:x[1])
-        for i in range(1, len(self.pop_sum)):
-            self.pop_sum[i][1] += self.pop_sum[i-1][1]
+        pop_sum.sort(key=lambda x:x[1])
+        for i in range(1, len(pop_sum)):
+            pop_sum[i][1] += pop_sum[i-1][1]
 
         r = random.random()
-        for i in range(self.factor):
-            sel_chrom = [x for x in self.pop_sum if x[1] >= (r+i/self.factor)%1][0]
-            self.new_pop.append(sel_chrom[0])
+        for i in range(factor):
+            sel_chrom = [x for x in pop_sum if x[1] >= (r+i/factor)%1][0]
+            new_pop.append(sel_chrom[0])
 
-        return self.new_pop
+        return new_pop
 
     def crossover(self, parent1, parent2):
         ''' Crossover: select 2 sections from 2 chromosomes and swap them. '''
-        cp1, cp2 = random.sample(range(self.L), 2)
+        cp1, cp2 = random.sample(range(self.N), 2)
         if (cp1 > cp2):
             tmp = cp1
             cp1 = cp2
@@ -62,21 +60,21 @@ class GA():
 
         for i in range(cp1, cp2):
             while parent2[j1] not in parent1[cp1:cp2]:
-                j1 = (j1+1)%self.L
+                j1 = (j1+1)%self.N
             child1[i] = parent2[j1]
-            j1 = (j1+1)%self.L
+            j1 = (j1+1)%self.N
 
             while parent1[j2] not in parent2[cp1:cp2]:
-                j2 = (j2+1)%self.L
+                j2 = (j2+1)%self.N
             child2[i] = parent1[j2]
-            j2 = (j2+1)%self.L
+            j2 = (j2+1)%self.N
 
         return child1, child2
 
     def mutation(self, chromosome):
         ''' Mutation: select two genes in a chromosome and swap them. '''
         mutated = copy.copy(chromosome)
-        gene1, gene2 = random.sample(range(self.L), 2)
+        gene1, gene2 = random.sample(range(self.N), 2)
         mutated[gene1] = chromosome[gene2]
         mutated[gene2] = chromosome[gene1]
         return mutated
@@ -91,26 +89,27 @@ class GA():
             self.offspring.append(c1)
             self.offspring.append(c2)
 
-        # for x in parents:
-        #     if random.random() <= p:
-        #         c = self.mutation(x)
-        #         self.offspring.append(c)
+        for x in parents:
+            if random.random() <= p:
+                c = self.mutation(x)
+                self.offspring.append(c)
 
         return self.offspring
 
     def elitismReplacement(self, population, offspring, n_elite):
         ''' Fill up population to a certain number. '''
-        self.pop.sort(key=lambda x: self.fitness(x))
-        self.new_pop = population[:n_elite]
+        population.sort(key=lambda x: self.fitness(x))
+        new_pop = population[:n_elite]
         offspring.sort(key=lambda x: self.fitness(x))
-        self.new_pop.extend(offspring[:(len(self.pop) - n_elite)])
-        return self.new_pop
+        new_pop.extend(offspring[:(len(self.pop) - n_elite)])
+        return new_pop
 
     def genetic(self):
+        ''' Run Genetic Algorithm 'runs' times. '''
         for i in range(self.runs):
-            parents = self.selection()
+            parents = self.selection(150)
             offspring = self.createOffspring(parents)
-            self.pop = self.elitismReplacement(parents, offspring, 100)
+            self.pop = self.elitismReplacement(self.pop, offspring, 100)
             print('------- run {} complete -------'.format(i))
 
         best = min(self.pop, key=lambda x: self.fitness(x))
@@ -118,5 +117,7 @@ class GA():
         return best, check_list, self.fitness(best)
 
 if __name__ == "__main__":
-    path, path_c, path_fit = GA(300,150, 200).genetic()
+    coords = dataPreProcess().getLocs()
+    GA = GA(coords, 200)
+    path, path_c, path_fit = GA.genetic()
     print(path_c, path_fit)

@@ -83,29 +83,39 @@ class GA():
         mutated[gene2] = chromosome[gene1]
         return mutated
 
-    # def createOffspring(self, parents, p=0.1):
-    #     ''' Applying crossover and mutation on parents. '''
-    #     self.offspring = []
-    #
-    #     for i in range(self.L):
-    #         p1, p2 = random.sample(parents, 2)
-    #         c1, c2 = self.crossover(p1, p2)
-    #         self.offspring.append(c1)
-    #         self.offspring.append(c2)
-    #
-    #     for x in parents:
-    #         if random.random() <= p:
-    #             c = self.mutation(x)
-    #             self.offspring.append(c)
-    #
-    #     return self.offspring
+    def createOffspring(self, parents, p=0.1):
+        ''' Applying crossover and mutation on parents. '''
+        self.offspring = []
+
+        for i in range(len(parents)):
+            p1, p2 = random.sample(parents, 2)
+            c1, c2 = self.crossover(p1, p2)
+            self.offspring.append(c1)
+            self.offspring.append(c2)
+
+        for x in parents:
+            if random.random() <= p:
+                c = self.mutation(x)
+                self.offspring.append(c)
+
+        return self.offspring
+
+    def elitismReplacement(self, population, offspring, n_elite):
+        ''' Fill up population to a certain number. '''
+        self.pop.sort(key=lambda x: self.fitness(x))
+        self.new_pop = population[:n_elite]
+        offspring.sort(key=lambda x: self.fitness(x))
+        print('---------- ',len(offspring))
+        self.new_pop.extend(offspring[:(len(self.pop) - n_elite)])
+        return self.new_pop
 
     def check(self):
         parents = self.selection()
-        # offspring = self.createOffspring(parents)
-        return parents
+        offspring = self.createOffspring(parents)
+        self.pop = self.elitismReplacement(parents, offspring, 100)
+        return self.pop
 
 if __name__ == "__main__":
-    off = GA(300, 150).check()
-    # print(off)
-    print(len(off))
+    run = GA(300, 150).check()
+    # print(run[33])
+    print(len(run))

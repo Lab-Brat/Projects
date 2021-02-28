@@ -5,11 +5,12 @@ from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
 
 class GA():
-    def __init__(self):
+    def __init__(self, population_size, selection_factor):
         self.coords = dataPreProcess().getLocs()
         self.L = len(self.coords)
         self.genes = [i for i in range(self.L)]
-        self.chrom = 300
+        self.chrom = population_size
+        self.factor = selection_factor
         self.distances = pairwise_distances(self.coords, metric='euclidean')
         self.pop = [random.sample(self.genes, self.L) for i in range(self.chrom)]
         self.pop_sum = []
@@ -36,7 +37,7 @@ class GA():
             fit += self.dist(path[i%self.L], path[(i+1)%self.L])
         return fit
 
-    def selection(self, factor, p=[1,0]):
+    def selection(self, p=[1,0]):
         """ Stohastic universal sampling """
         total_fitness = sum([self.fitness(x) for x in self.pop])
 
@@ -51,19 +52,23 @@ class GA():
             self.pop_sum[i][1] += self.pop_sum[i-1][1]
 
         r = random.random()
-        for i in range(factor):
-            sel_chrom = [x for x in self.pop_sum if x[1] >= (r+i/factor)%1][0]
+        for i in range(self.factor):
+            sel_chrom = [x for x in self.pop_sum if x[1] >= (r+i/self.factor)%1][0]
             self.new_pop.append(sel_chrom)
 
         return self.new_pop
 
-    def check(self):
-        np = self.selection(150)
-        return np
+    def crossover(self):
+        cp1, cp2 = random.sample(range(self.L), 2)
+        if (cp1 > cp2):
+            tmp = cp1
+            cp1 = cp2
+            cp2 = tmp
+
+        return (cp1, cp2)
 
 
 
 if __name__ == "__main__":
-    C = GA().check()
-    for i in C[10:20]:
-        print(i)
+    cp1,cp2 = GA(300, 150).crossover()
+    print(cp1,cp2)

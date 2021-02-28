@@ -4,25 +4,14 @@ from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
 
 class GA():
-    def __init__(self, population_size, selection_factor):
+    def __init__(self, population_size, selection_factor, runs):
+        self.runs = runs
         self.coords = dataPreProcess().getLocs()
         self.L = len(self.coords)
         self.genes = [i for i in range(self.L)]
         self.chrom = population_size
         self.factor = selection_factor
-        self.distances = pairwise_distances(self.coords, metric='euclidean')
         self.pop = [random.sample(self.genes, self.L) for i in range(self.chrom)]
-
-
-    # def fitness(self, chromosome):
-    #     fitness = 0
-    #     xs = [self.coords[chromosome[i%self.L]][0] for i in range(self.L+1)]
-    #     ys = [self.coords[chromosome[i%self.L]][1] for i in range(self.L+1)]
-    #
-    #     for k in range(len(xs)-1):
-    #         fitness += math.sqrt((xs[k]-xs[k+1])**2 + (ys[k]-ys[k+1])**2)
-    #
-    #     return fitness
 
     def dist(self, loc1, loc2):
         """ Euclidean distance between two locations. """
@@ -68,10 +57,19 @@ class GA():
 
         child1 = copy.copy(parent1)
         child2 = copy.copy(parent2)
+        j1 = cp1
+        j2 = cp2
 
-        tmp = child1[cp1:cp2]
-        child1[cp1:cp2] = child2[cp1:cp2]
-        child2[cp1:cp2] = tmp
+        for i in range(cp1, cp2):
+            while parent2[j1] not in parent1[cp1:cp2]:
+                j1 = (j1+1)%self.L
+            child1[i] = parent2[j1]
+            j1 = (j1+1)%self.L
+
+            while parent1[j2] not in parent2[cp1:cp2]:
+                j2 = (j2+1)%self.L
+            child2[i] = parent1[j2]
+            j2 = (j2+1)%self.L
 
         return child1, child2
 
@@ -93,10 +91,10 @@ class GA():
             self.offspring.append(c1)
             self.offspring.append(c2)
 
-        for x in parents:
-            if random.random() <= p:
-                c = self.mutation(x)
-                self.offspring.append(c)
+        # for x in parents:
+        #     if random.random() <= p:
+        #         c = self.mutation(x)
+        #         self.offspring.append(c)
 
         return self.offspring
 
@@ -105,17 +103,20 @@ class GA():
         self.pop.sort(key=lambda x: self.fitness(x))
         self.new_pop = population[:n_elite]
         offspring.sort(key=lambda x: self.fitness(x))
-        print('---------- ',len(offspring))
         self.new_pop.extend(offspring[:(len(self.pop) - n_elite)])
         return self.new_pop
 
-    def check(self):
-        parents = self.selection()
-        offspring = self.createOffspring(parents)
-        self.pop = self.elitismReplacement(parents, offspring, 100)
-        return self.pop
+    def genetic(self):
+        for i in range(self.runs):
+            parents = self.selection()
+            offspring = self.createOffspring(parents)
+            self.pop = self.elitismReplacement(parents, offspring, 100)
+            print('------- run {} complete -------'.format(i))
+
+        best = min(self.pop, key=lambda x: self.fitness(x))
+        check_list = [len(best), len(set(best))]
+        return best, check_list, self.fitness(best)
 
 if __name__ == "__main__":
-    run = GA(300, 150).check()
-    # print(run[33])
-    print(len(run))
+    path, path_c, path_fit = GA(300,150, 200).genetic()
+    print(path_c, path_fit)

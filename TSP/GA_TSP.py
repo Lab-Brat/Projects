@@ -12,8 +12,7 @@ class GA():
         self.factor = selection_factor
         self.distances = pairwise_distances(self.coords, metric='euclidean')
         self.pop = [random.sample(self.genes, self.L) for i in range(self.chrom)]
-        self.pop_sum = []
-        self.new_pop = []
+
 
     # def fitness(self, chromosome):
     #     fitness = 0
@@ -37,7 +36,9 @@ class GA():
         return fit
 
     def selection(self, p=[1,0]):
-        """ Stohastic universal sampling """
+        """ Selection: stohastic universal sampling. """
+        self.pop_sum = []
+        self.new_pop = []
         total_fitness = sum([self.fitness(x) for x in self.pop])
 
         for x in self.pop:
@@ -58,6 +59,7 @@ class GA():
         return self.new_pop
 
     def crossover(self, parent1, parent2):
+        ''' Crossover: select 2 sections from 2 chromosomes and swap them. '''
         cp1, cp2 = random.sample(range(self.L), 2)
         if (cp1 > cp2):
             tmp = cp1
@@ -74,17 +76,36 @@ class GA():
         return child1, child2
 
     def mutation(self, chromosome):
+        ''' Mutation: select two genes in a chromosome and swap them. '''
         mutated = copy.copy(chromosome)
         gene1, gene2 = random.sample(range(self.L), 2)
         mutated[gene1] = chromosome[gene2]
         mutated[gene2] = chromosome[gene1]
         return mutated
 
+    def createOffspring(self, parents, p=0.1):
+        ''' Applying crossover and mutation on parents. '''
+        self.offspring = []
+
+        for i in range(self.L):
+            p1, p2 = random.sample(parents, 2)
+            c1, c2 = self.crossover(p1, p2)
+            self.offspring.append(c1)
+            self.offspring.append(c2)
+
+        for x in parents[0]:
+            if random.random() <= p:
+                c = self.mutation(x)
+                self.offspring.append(c)
+
+        return self.offspring
+
     def check(self):
-        mut = self.mutation(self.pop[15])
-        return mut, self.pop[15]
+        parents = self.selection()
+        offspring = self.createOffspring(parents)
+        return offspring
 
 if __name__ == "__main__":
-    mut, gen = GA(300, 150).check()
-    print(mut)
-    print(gen)
+    off = GA(300, 150).check()
+    # print(off)
+    print(len(off))

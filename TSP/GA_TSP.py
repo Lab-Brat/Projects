@@ -12,6 +12,7 @@ class GA():
         self.chrom = 300
         self.distances = pairwise_distances(self.coords, metric='euclidean')
         self.pop = [random.sample(self.genes, self.L) for i in range(self.chrom)]
+        self.pop_sum = []
 
     # def fitness(self, chromosome):
     #     fitness = 0
@@ -31,15 +32,34 @@ class GA():
         """ Fitness value (total distance) of the path. """
         fit = 0
         for i in range(self.L):
-            fit += self.dist(path[i%self.L], path[(i+1) % self.L])
+            fit += self.dist(path[i%self.L], path[(i+1)%self.L])
         return fit
 
-    def check(self):
-        return (self.fitness(self.pop[10]))
+    def selection(self, p=[1,0]):
+        """ Stohastic universal sampling """
+        total_fitness = sum([self.fitness(x) for x in self.pop])
 
+        for x in self.pop:
+            prob1 = (p[0]*(total_fitness - self.fitness(x))+p[1])
+            prob2 = (p[0]*(total_fitness*(len(self.pop)-1))+p[1])
+            prob = prob1/prob2
+            self.pop_sum.append([x, prob])
+
+        self.pop_sum.sort(key=lambda x:x[1])
+        for i in range(1, len(self.pop_sum)):
+            self.pop_sum[i][1] += self.pop_sum[i-1][1]
+
+
+    def check(self):
+        check_list = []
+        self.selection()
+        for i in self.pop_sum[150:160]:
+            check_list.append(i)
+        return check_list
 
 
 
 if __name__ == "__main__":
     C = GA().check()
-    print(C)
+    for i in C:
+        print(i)

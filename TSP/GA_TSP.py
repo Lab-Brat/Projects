@@ -1,5 +1,4 @@
-import math, random
-import random
+import math, random, random, copy
 from sklearn.metrics.pairwise import pairwise_distances
 from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
@@ -58,17 +57,32 @@ class GA():
 
         return self.new_pop
 
-    def crossover(self):
+    def crossover(self, parent1, parent2):
         cp1, cp2 = random.sample(range(self.L), 2)
         if (cp1 > cp2):
             tmp = cp1
             cp1 = cp2
             cp2 = tmp
 
-        return (cp1, cp2)
+        child1 = copy.copy(parent1)
+        child2 = copy.copy(parent2)
+
+        tmp = child1[cp1:cp2]
+        child1[cp1:cp2] = child2[cp1:cp2]
+        child2[cp1:cp2] = tmp
+
+        return child1, child2
+
+    def check(self):
+        c1,c2 = self.crossover(self.pop[15], self.pop[200])
+        return c1,c2,self.pop[15], self.pop[200]
 
 
 
 if __name__ == "__main__":
-    cp1,cp2 = GA(300, 150).crossover()
-    print(cp1,cp2)
+    c1,c2,p1,p2 = GA(300, 150).check()
+    print(p1)
+    print(c1)
+    print('\n')
+    print(p2)
+    print(c2)

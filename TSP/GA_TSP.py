@@ -73,16 +73,18 @@ class GA():
 
         return child1, child2
 
+    def mutation(self, chromosome):
+        mutated = copy.copy(chromosome)
+        gene1, gene2 = random.sample(range(self.L), 2)
+        mutated[gene1] = chromosome[gene2]
+        mutated[gene2] = chromosome[gene1]
+        return mutated
+
     def check(self):
-        c1,c2 = self.crossover(self.pop[15], self.pop[200])
-        return c1,c2,self.pop[15], self.pop[200]
-
-
+        mut = self.mutation(self.pop[15])
+        return mut, self.pop[15]
 
 if __name__ == "__main__":
-    c1,c2,p1,p2 = GA(300, 150).check()
-    print(p1)
-    print(c1)
-    print('\n')
-    print(p2)
-    print(c2)
+    mut, gen = GA(300, 150).check()
+    print(mut)
+    print(gen)

@@ -1,20 +1,18 @@
 import math, random, random, copy
-from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
 
 class GA():
     def __init__(self, coords, runs):
         self.runs = runs
         self.coords = coords
-
         self.N = len(self.coords)
         self.genes = [i for i in range(self.N)]
         self.chrom = 300
         self.pop = [random.sample(self.genes, self.N) for i in range(self.chrom)]
 
     def fitness(self, chromosome):
+        ''' Calculate the total length (fitness) of a path. '''
         fitness = 0
-
         xs = [self.coords[chromosome[i%self.N]][0] for i in range(self.N+1)]
         ys = [self.coords[chromosome[i%self.N]][1] for i in range(self.N+1)]
 
@@ -25,7 +23,7 @@ class GA():
     def selection(self, factor, p=[1,0]):
         """ Selection: stohastic universal sampling. """
         pop_sum = []
-        new_pop = []
+        self.new_pop = []
         total_fitness = sum([self.fitness(x) for x in self.pop])
 
         for x in self.pop:
@@ -41,9 +39,7 @@ class GA():
         r = random.random()
         for i in range(factor):
             sel_chrom = [x for x in pop_sum if x[1] >= (r+i/factor)%1][0]
-            new_pop.append(sel_chrom[0])
-
-        return new_pop
+            self.new_pop.append(sel_chrom[0])
 
     def crossover(self, parent1, parent2):
         ''' Crossover: select 2 sections from 2 chromosomes and swap them. '''
@@ -94,30 +90,23 @@ class GA():
                 c = self.mutation(x)
                 self.offspring.append(c)
 
-        return self.offspring
-
-    def elitismReplacement(self, population, offspring, n_elite):
+    def elitismReplacement(self, population, n_elite):
         ''' Fill up population to a certain number. '''
         population.sort(key=lambda x: self.fitness(x))
         new_pop = population[:n_elite]
-        offspring.sort(key=lambda x: self.fitness(x))
-        new_pop.extend(offspring[:(len(self.pop) - n_elite)])
+        self.offspring.sort(key=lambda x: self.fitness(x))
+        new_pop.extend(self.offspring[:(len(self.pop) - n_elite)])
         return new_pop
 
     def genetic(self):
         ''' Run Genetic Algorithm 'runs' times. '''
         for i in range(self.runs):
-            parents = self.selection(150)
-            offspring = self.createOffspring(parents)
-            self.pop = self.elitismReplacement(self.pop, offspring, 100)
-            print('------- run {} complete -------'.format(i))
+            self.selection(150)
+            self.createOffspring(self.new_pop)
+            self.pop = self.elitismReplacement(self.pop, 100)
+            if (i+1)%50 == 0:
+                print('------- run {} complete -------'.format(i+1))
 
         best = min(self.pop, key=lambda x: self.fitness(x))
         check_list = [len(best), len(set(best))]
-        return best, check_list, self.fitness(best)
-
-if __name__ == "__main__":
-    coords = dataPreProcess().getLocs()
-    GA = GA(coords, 200)
-    path, path_c, path_fit = GA.genetic()
-    print(path_c, path_fit)
+        return best, self.fitness(best)

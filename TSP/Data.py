@@ -62,6 +62,18 @@ class dataPreProcess():
         plt.plot(xs, ys, 'ob-')
         plt.show()
 
+    def plot2Path(self, coords, path1, path2, N):
+        xs1 = [coords[path1[i]][0] for i in range(N+1)]
+        ys1 = [coords[path1[i]][1] for i in range(N+1)]
+        xs2 = [coords[path2[i]][0] for i in range(N+1)]
+        ys2 = [coords[path2[i]][1] for i in range(N+1)]
+
+        fig, axs = plt.subplots(1, 2)
+        fig.suptitle('Shortest paths by GA(left) and SA(right)')
+        axs[0].plot(xs1, ys1)
+        axs[1].plot(xs2, ys2)
+        plt.show()
+
 if __name__ == '__main__':
     LOC = dataPreProcess().getLocs()
     print(LOC)

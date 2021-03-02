@@ -3,18 +3,17 @@ from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
 
 class SA():
-    def __init__(self):
-        self.coords = dataPreProcess().getLocs()
-        self.L = len(self.coords)
-        self.all_locs = [i for i in range(self.L)]
+    def __init__(self, coords):
+        self.coords = coords
+        self.N = len(self.coords)
+        self.all_locs = [i for i in range(self.N)]
 
-        self.T = math.sqrt(self.L)
+        self.T = math.sqrt(self.N)
         self.alpha = 0.995
         self.stopping_temperature = 1e-8
 
         self.best_path = None
-        self.best_fit = float("Inf")
-
+        self.best_fit = float("inf")
 
     def dist(self, loc1, loc2):
         """ Euclidean distance between two locations. """
@@ -23,8 +22,8 @@ class SA():
     def fitness(self, path):
         """ Fitness value (total distance) of the path. """
         fit = 0
-        for i in range(self.L):
-            fit += self.dist(path[i % self.L], path[(i + 1) % self.L])
+        for i in range(self.N):
+            fit += self.dist(path[i % self.N], path[(i + 1) % self.N])
         return fit
 
     def greedy(self):
@@ -34,7 +33,6 @@ class SA():
         unvisit_loc = set(self.all_locs)
         unvisit_loc.remove(visit_loc)
 
-        # find shortest path
         while unvisit_loc:
             next_loc = min(unvisit_loc, key=lambda x: self.dist(visit_loc, x))
             unvisit_loc.remove(next_loc)
@@ -42,7 +40,6 @@ class SA():
             visit_loc = next_loc
 
         return path, self.fitness(path)
-
 
     def accept(self, candidate):
         """ Accept if candidate is better than current, else leave it to chance. """
@@ -57,14 +54,12 @@ class SA():
 
     def sim_anneal(self):
         """ Execute simulated annealing algorithm. """
-        # Initialize with the greedy solution.
         self.path, self.fit = self.greedy()
 
-        # Start annealing
         while self.T >= self.stopping_temperature:
             candidate = list(self.path)
-            l = random.randint(2, self.L - 1)
-            i = random.randint(0, self.L - l)
+            l = random.randint(2, self.N - 1)
+            i = random.randint(0, self.N - l)
             candidate[i:(i+l)] = reversed(candidate[i:(i+l)])
             self.accept(candidate)
             self.T *= self.alpha
@@ -73,8 +68,9 @@ class SA():
 
 
 if __name__ == "__main__":
-    gr_path, gr_fit = SA().greedy()
-    sa_path, sa_fit = SA().sim_anneal()
+    coords = dataPreProcess().getLocs()
+    gr_path, gr_fit = SA(coords).greedy()
+    sa_path, sa_fit = SA(coords).sim_anneal()
     print("Results of the greedy algorithm:")
     print("Path:\n{0}\nTotal distance: {1:.2f}".format(gr_path, gr_fit))
     print("\n")

@@ -1,4 +1,5 @@
 import random
+import matplotlib.pyplot as plt
 
 # with open("locations.txt") as txt:
 #     data = [loc for loc in txt]
@@ -54,6 +55,12 @@ class dataPreProcess():
         coords_list.append(depot)
 
         return coords_list
+
+    def plotPath(self, coords, path, N):
+        xs = [coords[path[i]][0] for i in range(N)]
+        ys = [coords[path[i]][1] for i in range(N)]
+        plt.plot(xs, ys, 'ob-')
+        plt.show()
 
 if __name__ == '__main__':
     LOC = dataPreProcess().getLocs()

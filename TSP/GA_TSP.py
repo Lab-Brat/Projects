@@ -95,7 +95,7 @@ class GA():
         new_pop.extend(self.offspring[:(len(self.pop) - n_elite)])
         return new_pop
 
-    def genetic(self):
+    def genetic(self, plotPath=False):
         ''' Run Genetic Algorithm 'runs' times. '''
         for i in range(self.runs):
             self.selection(150)
@@ -104,6 +104,10 @@ class GA():
             if (i+1)%50 == 0:
                 print('------- run {} complete -------'.format(i+1))
 
-        best = min(self.pop, key=lambda x: self.fitness(x))
-        check_list = [len(best), len(set(best))]
-        return best, self.fitness(best)
+        best_path = min(self.pop, key=lambda x: self.fitness(x))
+        check_list = [len(best_path), len(set(best_path))]
+
+        if plotPath == True:
+            dataPreProcess().plotPath(self.coords, best_path, self.N)
+
+        return best_path, self.fitness(best_path)

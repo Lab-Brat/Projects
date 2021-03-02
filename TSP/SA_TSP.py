@@ -1,4 +1,5 @@
 import random, math
+import matplotlib.pyplot as plt
 from scipy.spatial.distance import euclidean as eu
 from Data import dataPreProcess
 
@@ -52,7 +53,7 @@ class SA():
             if random.random() < math.exp(-abs(candidate_fitness - self.fit) / self.T):
                 self.fit, self.path = candidate_fitness, candidate
 
-    def sim_anneal(self):
+    def sim_anneal(self, plotPath=False):
         """ Execute simulated annealing algorithm. """
         self.path, self.fit = self.greedy()
 
@@ -63,6 +64,9 @@ class SA():
             candidate[i:(i+l)] = reversed(candidate[i:(i+l)])
             self.accept(candidate)
             self.T *= self.alpha
+
+        if plotPath == True:
+            dataPreProcess().plotPath(self.coords, self.best_path, self.N)
 
         return (self.best_path, self.best_fit)
 

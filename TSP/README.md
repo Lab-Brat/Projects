@@ -20,7 +20,7 @@ Solutions were obtained by the use of 2 algorithms that are based on natural phe
 ## References
 Genetic Algorithm:
 * https://stackabuse.com/traveling-salesman-problem-with-genetic-algorithms-in-java/
-* https://github.com/giacomodeodato/Genetic_Algorithm
+* https://github.com/giacomodeodato/Genetic_Algorithm  
 Simulated Annealing:
 * https://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
 * https://github.com/chncyhn/simulated-annealing-tsp

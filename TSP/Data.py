@@ -57,8 +57,8 @@ class dataPreProcess():
         return coords_list
 
     def plotPath(self, coords, path, N):
-        xs = [coords[path[i]][0] for i in range(N)]
-        ys = [coords[path[i]][1] for i in range(N)]
+        xs = [coords[path[i]][0] for i in range(N+1)]
+        ys = [coords[path[i]][1] for i in range(N+1)]
         plt.plot(xs, ys, 'ob-')
         plt.show()
 

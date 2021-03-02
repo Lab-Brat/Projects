@@ -105,7 +105,8 @@ class GA():
                 print('------- run {} complete -------'.format(i+1))
 
         best_path = min(self.pop, key=lambda x: self.fitness(x))
-        check_list = [len(best_path), len(set(best_path))]
+        # end path where it started
+        best_path.append(best_path[0])
 
         if plotPath == True:
             dataPreProcess().plotPath(self.coords, best_path, self.N)

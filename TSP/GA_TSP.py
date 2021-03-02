@@ -44,10 +44,7 @@ class GA():
     def crossover(self, parent1, parent2):
         ''' Crossover: select 2 sections from 2 chromosomes and swap them. '''
         cp1, cp2 = random.sample(range(self.N), 2)
-        if (cp1 > cp2):
-            tmp = cp1
-            cp1 = cp2
-            cp2 = tmp
+        if (cp1 > cp2): cp1,cp2 = cp2,cp1
 
         child1 = copy.copy(parent1)
         child2 = copy.copy(parent2)

@@ -1,4 +1,4 @@
-import time 
+import time
 import random
 from itertools import product
 
@@ -8,7 +8,7 @@ def brute_force(combo):
     nums = [0,1,2,3,4,5,6,7,8,9]
     permutations = product(nums, repeat=len(combo))
 
-    # find permutations with repetition to guess 
+    # find permutations with repetition to guess
     for p in permutations:
         if p == combo:
             print("Cracked!!!")
@@ -18,11 +18,8 @@ def brute_force(combo):
             count += 1
 
 def main():
-    combo = []
-    for i in range(7):
-        combo.append(random.randint(0, 9))
+    combo = [random.randint(0,9) for i in range(8)]
     combo_t = tuple(combo)
-
     brute_force(combo_t)
 
 

@@ -10,11 +10,13 @@ class Crack_Code():
         self.N = len(self.combo)
 
     def out(self, count, T):
+        ''' Generalized output. '''
         print("Cracked!!!")
         print("The code was: {}".format(self.combo))
         print("It took {0} tries and {1:.4f} seconds".format(count, T))
 
     def brute_force(self):
+        ''' Brute force method, tries every permutation of possible numbers '''
         start = time.time()
         count = 0
         permutations = product(self.code_ints, repeat=code_len)
@@ -27,6 +29,7 @@ class Crack_Code():
                 count += 1
 
     def fitness(self, attempt):
+        ''' Fitness function: the amount of same integers. '''
         similarity = 0
         for i,j in zip(self.combo, attempt):
             if i==j:
@@ -34,6 +37,7 @@ class Crack_Code():
         return similarity
 
     def genetic_hill(self):
+        ''' Hill climbing algorithm with parts of genetic algorithm. '''
         start = time.time()
         count = 0
         attempt = [0]*self.N

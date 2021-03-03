@@ -3,9 +3,11 @@ import random
 from itertools import product
 
 class Crack_Code():
-    def __init__(self, combo):
-        self.combo = list(combo)
-        self.N = len(combo)
+    def __init__(self, code_len, code_ints):
+        self.code_len = code_len
+        self.code_ints = code_ints
+        self.combo = [random.choice(code_ints) for i in range(code_len)]
+        self.N = len(self.combo)
         self.nums = [i for i in range(10)]
 
     def brute_force(self):
@@ -55,8 +57,10 @@ class Crack_Code():
 if __name__ == '__main__':
     start = time.time()
 
-    combo_t = tuple([random.randint(0,9) for i in range(10)])
-    Crack_Code(combo_t).genetic_hill()
+    # combo_t = tuple([random.randint(0,9) for i in range(10)])
+    code_len = 10
+    code_ints = [i for i in range(10)]
+    Crack_Code(code_len, code_ints).genetic_hill()
 
     end = time.time()
     print("Runtime was {0:.2f} seconds.".format(end-start))

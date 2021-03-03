@@ -9,17 +9,20 @@ class Crack_Code():
         self.combo = [random.choice(code_ints) for i in range(code_len)]
         self.N = len(self.combo)
 
+    def out(self, count, T):
+        print("Cracked!!!")
+        print("The code was: {}".format(self.combo))
+        print("It took {0} tries and {1:.4f} seconds".format(count, T))
+
     def brute_force(self):
+        start = time.time()
         count = 0
         permutations = product(self.code_ints, repeat=code_len)
-        print(self.combo)
 
-        # find permutations with repetition to guess
         for p in permutations:
             if list(p) == self.combo:
-                print("Cracked!!!")
-                print("The code was: {}".format(self.combo))
-                print("It took {} tries".format(count))
+                end = time.time()
+                self.out(count, end-start)
             else:
                 count += 1
 
@@ -31,6 +34,7 @@ class Crack_Code():
         return similarity
 
     def genetic_hill(self):
+        start = time.time()
         count = 0
         attempt = [0]*self.N
         attempt_fit = self.fitness(attempt)
@@ -46,19 +50,14 @@ class Crack_Code():
                 attempt_fit = next_att_fit
             count += 1
 
-        print("Cracked!!!")
-        print("The code was: {}".format(self.combo))
-        print("It took {} tries".format(count))
+        end = time.time()
+        self.out(count, end-start)
 
 
 if __name__ == '__main__':
-    start = time.time()
-
-    code_len = 7
+    code_len = 8
     code_ints = [i for i in range(code_len)]
     model = Crack_Code(code_len, code_ints)
-    # model.genetic_hill()
+    model.genetic_hill()
+    print()
     model.brute_force()
-
-    end = time.time()
-    print("Runtime was {0:.2f} seconds.".format(end-start))

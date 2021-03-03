@@ -2,30 +2,31 @@ import time
 import random
 from itertools import product
 
-def brute_force(combo):
-    # combo = (9,9,7,6,5,4,3)
-    count = 0
-    nums = [0,1,2,3,4,5,6,7,8,9]
-    permutations = product(nums, repeat=len(combo))
+class Crack_Code():
+    def __init__(self, combo):
+        self.combo = combo
+        self.N = len(combo)
+        self.nums = [i for i in range(10)]
 
-    # find permutations with repetition to guess
-    for p in permutations:
-        if p == combo:
-            print("Cracked!!!")
-            print("The code was: {}".format(combo))
-            print("It took {} tries".format(count))
-        else:
-            count += 1
+    def brute_force(self):
+        count = 0
+        permutations = product(self.nums, repeat=self.N)
 
-def main():
-    combo = [random.randint(0,9) for i in range(8)]
-    combo_t = tuple(combo)
-    brute_force(combo_t)
+        # find permutations with repetition to guess
+        for p in permutations:
+            if p == self.combo:
+                print("Cracked!!!")
+                print("The code was: {}".format(self.combo))
+                print("It took {} tries".format(count))
+            else:
+                count += 1
 
 
 if __name__ == '__main__':
-    start_time = time.time()
-    main()
-    end_time = time.time()
-    duration = end_time - start_time
-    print("Runtime was {0:.2f} seconds.".format(duration))
+    start = time.time()
+
+    combo_t = tuple([random.randint(0,9) for i in range(7)])
+    Crack_Code(combo_t).brute_force()
+
+    end = time.time()
+    print("Runtime was {0:.2f} seconds.".format(end-start))

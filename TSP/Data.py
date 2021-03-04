@@ -68,10 +68,10 @@ class dataPreProcess():
         xs2 = [coords[path2[i]][0] for i in range(N+1)]
         ys2 = [coords[path2[i]][1] for i in range(N+1)]
 
-        fig, axs = plt.subplots(1, 2)
+        fig, axs = plt.subplots(1,2, figsize=(9.7, 5))
         fig.suptitle('Shortest paths by GA(left) and SA(right)')
-        axs[0].plot(xs1, ys1)
-        axs[1].plot(xs2, ys2)
+        axs[0].plot(xs1, ys1, 'ob-')
+        axs[1].plot(xs2, ys2, 'om-')
         plt.show()
 
 if __name__ == '__main__':

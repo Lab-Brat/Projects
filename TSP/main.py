@@ -5,9 +5,8 @@ from SA_TSP import SA
 
 coords = dataPreProcess().getLocs()
 
-print("---------  GA Starts  ---------")
 start = time.time()
-GA = GA(coords, 300)
+GA = GA(coords, 200)
 path_ga, path_fit_ga = GA.genetic()
 end = time.time()
 print("GA Total Distance: {0:.2f}, Time: {1:.2f}s".format(\

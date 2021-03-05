@@ -1,11 +1,10 @@
 import random, re
 import matplotlib.pyplot as plt
 
-coords = []
+p = re.compile(r'^(\d{1,3}) (\d{1,3})$')
 with open("locations.txt") as txt:
-    for line in txt.readlines():
-        pattern = re.compile(r'^(\d{1,3}) (\d{1,3})$')
-        coords.append([int(i) for i in pattern.search(line).groups()])
+    coords = [[int(i) for i in p.search(l).groups()] for l in txt.readlines()]
+
 
 res1 = [5,10,15,20,25,30,35,40]     # only visit 3 of these
 res2 = [2,4,6,8,10,20,22,32,33,35]  # only visit 5 of these

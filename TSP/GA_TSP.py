@@ -102,7 +102,7 @@ class GA():
             self.createOffspring(self.new_pop)
             self.pop = self.elitismReplacement(self.pop, 100)
             if (i+1)%50 == 0:
-                print('------- run {} complete -------'.format(i+1))
+                print('------ run {} complete!'.format(i+1))
 
         best_path = min(self.pop, key=lambda x: self.fitness(x))
         # end path where it started

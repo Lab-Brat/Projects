@@ -1,7 +1,7 @@
 # TSP_GA_SA
 Traveling Salesman Problem solved with Genetic Algorithm and Simulated Annealing
 
-## 1. Problem Statement
+## Problem Statement
 There are a set of customers, and a postman. This postman starts from node (0,0), and visits some customers. Suppose there is a path between each pair of nodes. The distance between each pair of two nodes is the Euclidean distance of such two nodes (reserve to 0.01 precision).
 
 Design the shortest path (visiting sequence to customers) for this postman, such that:
@@ -11,8 +11,8 @@ Design the shortest path (visiting sequence to customers) for this postman, such
 
 The locations of each customer are stored in locations.txt. The final result should contain visual representation of the path and the distance.
 
-## 2. Solution
-Solutions were obtained by the use of 2 algorithms that are based on natural phenomena, namely Genetic Algorithm (GA_TSP.py) and Simulated Annealing (SA_TSP.py). Simulated Annealing uses a greedy algorithm to obtain an initial path, which is then optimized.
+## Solution
+Solutions were obtained by the use of 2 algorithms that are based on natural phenomena, namely Genetic Algorithm (GA_TSP.py) and Simulated Annealing (SA_TSP.py). Simulated Annealing uses a greedy algorithm to obtain an initial path, which is then optimized. To get the solutions run main.py, it will calculate the length of the shortest path, and automatically plot both paths using matplotlib.
 
 
 ## References

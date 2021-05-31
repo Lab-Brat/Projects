@@ -2,7 +2,7 @@ import re
 import os
 import pprint
 
-file = open('queue_mail_2.txt', 'r')
+file = open('queue_mail_3.txt', 'r')
 lines = file.readlines()
 
 def parser(line):
@@ -15,8 +15,7 @@ def parser(line):
     arr_time = re.search(patt_date+patt_time, line_rest)
     email = re.search(r'[a-z.]+@[a-z-]+\.(ru|com)', line_rest)
 
-    info = [id, int(size[0]), arr_time[0], [email[0]]]
-    return info
+    return [id, int(size[0]), arr_time[0], [email[0]]]
 
 def scan_mails(lines):
     qline = []
@@ -34,10 +33,14 @@ def write_log(etalon, to_del):
         if not os.path.exists('/home/oxxo/Downloads/queue_fix/log.txt'):
             os.mknod('/home/oxxo/Downloads/queue_fix/log.txt')
         f = open('log.txt', 'a')
-        f.write('[KEEP]: {0}'.format(etalon))
-        f.write('\n')
-        f.write('[DELETE]: {0}'.format([i for i in to_del]))
-        f.write('\n')
+        if etalon == None and to_del == []:
+            f.write('[NO BUGS]')
+            f.write('\n')
+        else:
+            f.write('[KEEP]: {0}'.format(etalon))
+            f.write('\n')
+            f.write('[DELETE]: {0}'.format([i for i in to_del]))
+            f.write('\n')
 
 def bug_finder(potential_bugs):
     etalon = None
@@ -46,7 +49,6 @@ def bug_finder(potential_bugs):
     for i in range(len(potential_bugs)-1):
         if potential_bugs[i][3]==potential_bugs[i+1][3] and \
            potential_bugs[i][1]==potential_bugs[i+1][1]:
-           print('BUG FOUND on {0} ITERATION!'.format(i))
            if etalon == None:
                etalon = potential_bugs[i][0]
                to_del.append(potential_bugs[i+1][0])
@@ -59,10 +61,7 @@ def bug_finder(potential_bugs):
         else:
             write_log(etalon, to_del)
             to_del = []
-        print(i+1, len(potential_bugs)-1)
 
-    # return etalon, to_del
 
 potential_bugs = scan_mails(lines)
-# print(len(potential_bugs)-1)
 bug_finder(potential_bugs)

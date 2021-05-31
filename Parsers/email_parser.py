@@ -2,20 +2,17 @@ import re
 import os
 import pprint
 
-file = open('queue_mail_3.txt', 'r')
+file = open('queue_mail_1.txt', 'r')
 lines = file.readlines()
 
 def parser(line):
-    id = line[0:12]
-    line_rest = line[12:-1]
-
-    size = re.search(r'\s[0-9]+\s', line_rest)
+    id = re.search(r'^[A-Z0-9]+\*', line)
+    size = re.search(r'\s[0-9]+\s', line)
     patt_date = r'[A-Z][a-z][a-z]\s[A-Z][a-z][a-z]\s[\d]+\s'
     patt_time = r'(\d{2}:\d{2}:\d{2})'
-    arr_time = re.search(patt_date+patt_time, line_rest)
-    email = re.search(r'[a-z.]+@[a-z-]+\.(ru|com)', line_rest)
-
-    return [id, int(size[0]), arr_time[0], [email[0]]]
+    arr_time = re.search(patt_date+patt_time, line)
+    email = re.search(r'[a-z.]+@[a-z-]+\.(ru|com)', line)
+    return [id[0], int(size[0]), arr_time[0], [email[0]]]
 
 def scan_mails(lines):
     qline = []

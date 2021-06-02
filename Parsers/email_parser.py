@@ -50,7 +50,14 @@ class email_debugger_5000():
             f.write('[DELETE]: {0}'.format([i for i in to_del]))
             f.write('\n')
 
-    def debug(self):
+    def find_diff(self, em_1, em_2):
+        ems_1 = set(em_1[3])
+        ems_2 = set(em_2[3])
+        differences = (ems_1-ems_2).union(ems_2-ems_1)
+        print('Differences are: ')
+        pprint.pprint(differences)
+
+    def debug(self, diff=False):
         ''' Get the list of potentially buggy emails and search it for bugs'''
         potential_bugs = self.scan_mails(self.lines)
         etalon = None
@@ -69,14 +76,18 @@ class email_debugger_5000():
                    if i+1 == len(potential_bugs)-1:
                        self.write_log(etalon, to_del)
             else:
+                if diff==True:
+                    self.find_diff(potential_bugs[i], potential_bugs[i+1])
                 self.write_log(etalon, to_del)
                 etalon = None
                 to_del = []
 
+            print('\n')
             print("check the log file here: {0}".format(self.log_path))
-
+            print('\n')
 
 if __name__ == "__main__":
-    queue = input("Please enter the file name of your queue: ")
+    # queue = input("Please enter the file name of your queue: ")
+    queue = 'queue_mail_1.txt'
     data = open(queue, 'r')
-    email_debugger_5000(data).debug()
+    email_debugger_5000(data).debug(diff=True)

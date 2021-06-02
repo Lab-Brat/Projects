@@ -6,7 +6,6 @@ class email_debugger_5000():
     def __init__(self, data):
         self.data = data
         self.lines = data.readlines()
-        self.qline = []
         self.patt_id = '^[A-Z0-9]+\*'
         self.patt_size = r'\s[0-9]+\s'
         self.patt_date = r'[A-Z][a-z][a-z]\s[A-Z][a-z][a-z]\s[\d]+\s'
@@ -27,9 +26,6 @@ class email_debugger_5000():
         ''' Scan a file line by line, output emails that have 10+ recipients '''
         qline = []
         for line in lines:
-            " If the line contains an email entry, parse it and add to qline. \
-              If the line starts from whitespace but contains an email, \
-              add it email to the previous entry"
             if re.match(self.patt_id, line) and len(line)>13:
                 qline.append(self.parser(line))
             elif re.match('^\s', line):
@@ -41,8 +37,6 @@ class email_debugger_5000():
 
     def write_log(self, etalon, to_del):
         ''' Writes program output to a log file '''
-
-        " If the file does not exist in the path - create it"
         if not os.path.exists(self.log_path):
             os.mknod(self.log_path)
         f = open(self.log_path, 'a')
@@ -58,13 +52,11 @@ class email_debugger_5000():
 
     def debug(self):
         ''' Get the list of potentially buggy emails and search it for bugs'''
-
         potential_bugs = self.scan_mails(self.lines)
         etalon = None
         to_del = []
 
         for i in range(len(potential_bugs)-1):
-            " If the recipients list and size are same, then the bug is found."
             if potential_bugs[i][3]==potential_bugs[i+1][3] and \
                potential_bugs[i][1]==potential_bugs[i+1][1]:
                if etalon == None:

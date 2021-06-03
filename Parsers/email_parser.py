@@ -69,17 +69,14 @@ class email_debugger_5000():
         to_del = []
 
         for i in range(len(potential_bugs)-1):
-            if potential_bugs[i][3]==potential_bugs[i+1][3] and \
+            if potential_bugs[i][3]==potential_bugs[i+1][3] or \
+               self.find_diff(potential_bugs[i], potential_bugs[i+1]) < 5 and \
                potential_bugs[i][1]==potential_bugs[i+1][1]:
                if etalon == None:
                    etalon = potential_bugs[i][0]
                    to_del.append(potential_bugs[i+1][0])
                    if i+1 == len(potential_bugs)-1:
                        self.write_log(etalon, to_del)
-               elif potential_bugs[i][1]==potential_bugs[i+1][1] and \
-                    self.find_diff(potential_bugs[i], potential_bugs[i+1]) < 5:
-                       etalon = potential_bugs[i][0]
-                       to_del.append(potential_bugs[i+1][0])
                else:
                    to_del.append(potential_bugs[i+1][0])
                    if i+1 == len(potential_bugs)-1:

@@ -54,39 +54,40 @@ class email_debugger_5000():
         ems_1 = set(em_1[3])
         ems_2 = set(em_2[3])
         differences = (ems_1-ems_2).union(ems_2-ems_1)
-        # print('Differences are: ')
-        # pprint.pprint(differences)
 
         total = len(em_1[3]) + len(em_2[3])
-        percentage = len(differences)/total
-        # print("in {0} emails, {1:.2f}% are different".format(total,percentage))
-        return percentage
+        percentage = (len(differences)/total)*100
+        return differences, percentage, total
 
-    def debug(self, diff=False):
+    def debug(self, diff_output=False):
         ''' Get the list of potentially buggy emails and search it for bugs'''
         potential_bugs = self.scan_mails(self.lines)
         etalon = None
         to_del = []
 
         for i in range(len(potential_bugs)-1):
-            if potential_bugs[i][3]==potential_bugs[i+1][3] or \
-               self.find_diff(potential_bugs[i], potential_bugs[i+1]) < 5 and \
-               potential_bugs[i][1]==potential_bugs[i+1][1]:
+            em_current, em_next = potential_bugs[i], potential_bugs[i+1]
+            diff, perc, tot = self.find_diff(em_current, em_next)
+
+            if em_current[3]==em_next[3] or perc < 5 and em_current[1]==em_next[1]:
                if etalon == None:
-                   etalon = potential_bugs[i][0]
-                   to_del.append(potential_bugs[i+1][0])
+                   etalon = em_current[0]
+                   to_del.append(em_next[0])
                    if i+1 == len(potential_bugs)-1:
                        self.write_log(etalon, to_del)
                else:
-                   to_del.append(potential_bugs[i+1][0])
+                   to_del.append(em_next[0])
                    if i+1 == len(potential_bugs)-1:
                        self.write_log(etalon, to_del)
             else:
-                if diff==True:
-                    self.find_diff(potential_bugs[i], potential_bugs[i+1])
                 self.write_log(etalon, to_del)
                 etalon = None
                 to_del = []
+
+            if diff_output==True:
+                print('Differences are: ')
+                pprint.pprint(diff)
+                print("in {0} emails, {1:.2f}% are different".format(tot,perc))
 
             print('\n')
             print("check the log file here: {0}".format(self.log_path))
@@ -96,4 +97,4 @@ if __name__ == "__main__":
     # queue = input("Please enter the file name of your queue: ")
     queue = 'queue_mail_1.txt'
     data = open(queue, 'r')
-    email_debugger_5000(data).debug(diff=True)
+    email_debugger_5000(data).debug(diff_output=True)

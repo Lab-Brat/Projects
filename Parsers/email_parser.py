@@ -57,6 +57,10 @@ class email_debugger_5000():
         print('Differences are: ')
         pprint.pprint(differences)
 
+        total = len(em_1[3]) + len(em_2[3])
+        percentage = len(differences)/total
+        print("in {0} emails, {1:.2f}% are different".format(total,percentage))
+
     def debug(self, diff=False):
         ''' Get the list of potentially buggy emails and search it for bugs'''
         potential_bugs = self.scan_mails(self.lines)

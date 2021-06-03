@@ -54,12 +54,13 @@ class email_debugger_5000():
         ems_1 = set(em_1[3])
         ems_2 = set(em_2[3])
         differences = (ems_1-ems_2).union(ems_2-ems_1)
-        print('Differences are: ')
-        pprint.pprint(differences)
+        # print('Differences are: ')
+        # pprint.pprint(differences)
 
         total = len(em_1[3]) + len(em_2[3])
         percentage = len(differences)/total
-        print("in {0} emails, {1:.2f}% are different".format(total,percentage))
+        # print("in {0} emails, {1:.2f}% are different".format(total,percentage))
+        return percentage
 
     def debug(self, diff=False):
         ''' Get the list of potentially buggy emails and search it for bugs'''
@@ -75,6 +76,10 @@ class email_debugger_5000():
                    to_del.append(potential_bugs[i+1][0])
                    if i+1 == len(potential_bugs)-1:
                        self.write_log(etalon, to_del)
+               elif potential_bugs[i][1]==potential_bugs[i+1][1] and \
+                    self.find_diff(potential_bugs[i], potential_bugs[i+1]) < 5:
+                       etalon = potential_bugs[i][0]
+                       to_del.append(potential_bugs[i+1][0])
                else:
                    to_del.append(potential_bugs[i+1][0])
                    if i+1 == len(potential_bugs)-1:

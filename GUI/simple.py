@@ -19,13 +19,27 @@ class gui():
         if resize==False:
             self.root.resizable(False,False)
 
+    def return_pressed(self, event):
+        print('Return key pressed.')
+
+    def log(self, event):
+        print(event)
+
+    def button(self):
+        btn = ttk.Button(self.root, text='Save')
+        btn.bind('<Return>', self.return_pressed)
+        btn.bind('<Return>', self.log, add='+')
+        btn.focus()
+        btn.pack(expand=True)
+
     def show(self, m_text, position):
         if position == 'mid':
             self.mid_screen()
         else:
             self.root.geometry(self.width, self.height)
 
-        message = tk.Label(self.root, text=m_text).pack()
+        #message = tk.Label(self.root, text=m_text).pack()
+        self.button()
         self.root.mainloop()
 
 

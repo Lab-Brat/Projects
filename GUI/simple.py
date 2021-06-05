@@ -1,22 +1,35 @@
 import tkinter as tk
-
-root = tk.Tk()
-root.title('WINDOW')
-# root.geometry('600x400')
-
-win_wid = 300
-win_hei = 200
-# screen dimensions
-screen_wid = root.winfo_screenwidth()
-screen_hei = root.winfo_screenheight()
-#find center
-center_x = int(screen_wid/2 - win_wid/2)
-center_y = int(screen_hei/2 - win_hei/2)
-root.geometry(f'{win_wid}x{win_hei}+{center_x}+{center_y}')
+from tkinter import ttk
 
 
-message = tk.Label(root, text='This is a window!')
-message.pack()
+class gui():
+    def __init__(self, title, width=300, height=200):
+        self.root = tk.Tk()
+        self.title = self.root.title(title)
+        self.width = width
+        self.height = height
 
-# display the window
-root.mainloop()
+    def mid_screen(self, resize=True):
+        screen_wid = self.root.winfo_screenwidth()
+        screen_hei = self.root.winfo_screenheight()
+        #find center
+        center_x = int(screen_wid/2 - self.width/2)
+        center_y = int(screen_hei/2 - self.height/2)
+        self.root.geometry(f'{self.width}x{self.height}+{center_x}+{center_y}')
+        if resize==False:
+            self.root.resizable(False,False)
+
+    def show(self, m_text, position):
+        if position == 'mid':
+            self.mid_screen()
+        else:
+            self.root.geometry(self.width, self.height)
+
+        message = tk.Label(self.root, text=m_text).pack()
+        self.root.mainloop()
+
+
+if __name__ == "__main__":
+    title = 'WINDOW'
+    m_text = 'This is a window!'
+    gui(title).show(m_text, 'mid')

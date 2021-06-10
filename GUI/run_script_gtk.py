@@ -7,10 +7,22 @@ class gui(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title='THIS IS A WINDOW!')
 
-        self.grid = Gtk.Grid()
-        self.add(self.grid)
+        self.set_border_width(10)
+        listbox = Gtk.ListBox()
+        listbox.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.add(listbox)
 
-        # self.box = Gtk.Box(spacing=10)
+        # Checkbox
+        row1 = Gtk.ListBoxRow()
+        box1 = Gtk.Box(spacing=100)
+        row1.add(box1)
+        label = Gtk.Label("Check it: ")
+        check = Gtk.CheckButton()
+        box1.pack_start(label, True, True, 0)
+        box1.pack_start(check, True, True, 0)
+        listbox.add(row1)
+
+        # self.box = Gtk.Box(spacing=20)
         # self.add(self.box)
 
         self.button1 = Gtk.Button(label="Click Me!")
@@ -22,8 +34,6 @@ class gui(Gtk.Window):
         self.button2.connect("clicked", self.button_clicked2)
         # self.box.pack_start(self.button2, True, True, 0)
 
-        self.grid.add(self.button1)
-        self.grid.add(self.button2)
 
     def button_clicked1(self, widget):
         print("Great Success.")

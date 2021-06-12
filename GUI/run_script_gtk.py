@@ -14,13 +14,23 @@ class gui(Gtk.Window):
 
         # Checkbox
         row1 = Gtk.ListBoxRow()
-        box1 = Gtk.Box(spacing=100)
+        box1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL,spacing=100)
         row1.add(box1)
         label = Gtk.Label("Check it: ")
         check = Gtk.CheckButton()
         box1.pack_start(label, True, True, 0)
         box1.pack_start(check, True, True, 0)
         listbox.add(row1)
+
+        # Switch
+        row2 = Gtk.ListBoxRow()
+        box2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL,spacing=100)
+        row2.add(box2)
+        label = Gtk.Label("Switch it: ")
+        switch = Gtk.Switch()
+        box2.pack_start(label, True, True, 0)
+        box2.pack_start(switch, True, True, 0)
+        listbox.add(row2)
 
         # self.box = Gtk.Box(spacing=20)
         # self.add(self.box)
